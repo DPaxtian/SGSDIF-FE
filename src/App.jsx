@@ -5,8 +5,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
 import Dashboard from './paginas/Dashboard';
-
-const EnProcesoContent = () => <Box>En proceso de construccion :)!</Box>;
+import ConstructionPage from './paginas/PaginaEnConstruccion';
 
 function App() {
   
@@ -21,7 +20,7 @@ function App() {
       case "dashboard":
         return <Dashboard />;
       case "enProceso":
-        return <EnProcesoContent />;
+        return <ConstructionPage/>;
     }
   };
 
@@ -60,7 +59,7 @@ function App() {
             >
               <Image src='/src/assets/img/dif_logo.png' h='40px' alt='DIF Xalapa' marginBottom='16px' />
               <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='xl' marginBottom='8px' />
-              <Text fontSize='md' color='#310E3A'>Nombre Usuario</Text>
+              <Text fontSize='md' color='#310E3A'>Marlon Montiel Pérez</Text>
               <Text fontSize='xs' color='#310E3A'>Buen dia!</Text>
             </Box>
 
