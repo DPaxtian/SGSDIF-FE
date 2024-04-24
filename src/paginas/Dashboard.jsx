@@ -1,34 +1,56 @@
 import React from 'react';
-import { Button, Flex, VStack, HStack, useColorModeValue } from '@chakra-ui/react';
-import { FaRegThumbsUp, FaBoxOpen, FaClipboardList, FaRegLightbulb } from 'react-icons/fa';
+import {
+  Box,
+  SimpleGrid,
+  Center,
+  Text,
+  Circle,
+  VStack,
+  useColorModeValue,
+  Icon,
+} from '@chakra-ui/react';
+import { FaClipboardList, FaCheck, FaChartArea, FaDolly } from 'react-icons/fa';
 
-const App = () => {
-  // Colores de fondo de los botones que cambian con el color mode
-  const bgButton1 = useColorModeValue('purple.500', 'purple.200');
-  const bgButton2 = useColorModeValue('teal.500', 'teal.200');
-  const bgButton3 = useColorModeValue('orange.500', 'orange.200');
-  const bgButton4 = useColorModeValue('cyan.500', 'cyan.200');
+const FeatureBox = ({ title, icon }) => {
+  // Determina los colores para el hover
+  const bg = useColorModeValue('gray.200', 'gray.700');
+  const hoverBg = useColorModeValue('gray.300', 'gray.600');
 
   return (
-    <Flex direction={{ base: 'column', md: 'row' }} wrap="wrap" justifyContent="center" alignItems="center" h="100vh" p={8}>
-      <VStack spacing={4} align="stretch">
-        <Button leftIcon={<FaRegThumbsUp />} bg={bgButton1} color="white" _hover={{ bg: useColorModeValue('purple.600', 'purple.300') }}>
-          Aprobar solicitudes
-        </Button>
-        <Button leftIcon={<FaClipboardList />} bg={bgButton3} color="white" _hover={{ bg: useColorModeValue('orange.600', 'orange.300') }}>
-          Generar reporte
-        </Button>
-      </VStack>
+    <Center
+      p={5}
+      flexDir="column"
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="lg"
+      bg={useColorModeValue('white', 'gray.800')}
+      transition="all 0.2s ease-in-out" // Suaviza la transición de estilos
+      _hover={{
+        bg: hoverBg, // Oscurece el fondo
+        transform: 'scale(1.05)', // Escala ligeramente el FeatureBox
+        '.icon': {
+          transform: 'scale(1.25)', // Aumenta el tamaño del ícono
+        },
+      }}
+    >
+      <Circle size="80px" className="icon" bg={bg} mb={4} transition="all 0.2s ease-in-out">
+        <Icon as={icon} w={10} h={10} />
+      </Circle>
+      <Text fontWeight="bold">{title}</Text>
+    </Center>
+  );
+};
 
-      <VStack spacing={4} align="stretch" ml={{ md: 4 }}>
-        <Button leftIcon={<FaBoxOpen />} bg={bgButton2} color="white" _hover={{ bg: useColorModeValue('teal.600', 'teal.300') }}>
-          Agregar apoyo al inventario
-        </Button>
-        <Button leftIcon={<FaRegLightbulb />} bg={bgButton4} color="white" _hover={{ bg: useColorModeValue('cyan.600', 'cyan.300') }}>
-          Nueva solicitud
-        </Button>
-      </VStack>
-    </Flex>
+const App = () => {
+  return (
+    <Box p={10} height="100vh">
+      <SimpleGrid columns={{ base: 2, md: 2 }} spacing={10} alignItems="center" justifyContent="center" height="full">
+        <FeatureBox title="Nueva solicitud" icon={FaClipboardList} />
+        <FeatureBox title="Aprobar solicitudes" icon={FaCheck} />
+        <FeatureBox title="Generar reporte" icon={FaChartArea} />
+        <FeatureBox title="Agregar apoyo al inventario" icon={FaDolly} />
+      </SimpleGrid>
+    </Box>
   );
 };
 
