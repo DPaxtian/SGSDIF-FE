@@ -1,0 +1,178 @@
+.login-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: url('./assets/img/fondoLogin.png') center center / contain no-repeat fixed;
+    
+  }
+  .card {
+    width:  380px; 
+    height: 400px; 
+    background: white;
+    box-shadow: 0 20px 10px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px; 
+  }
+  .card-dif{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(-5%, 5%);
+    width: 70px; 
+    height: auto; 
+  }
+  .card-xalapa{
+    position: absolute;
+    top: 19%;
+    left: 31.5%;
+    transform: translate(120%, 8%);
+    width: 150px; 
+    height:80px; 
+  }
+  .card-ayuntamiento{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(280%, 25%);
+    width: 75px; 
+    height: auto; 
+  }
+  .card-usuario{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(50%, 600%);
+    width: 20px; 
+    height: auto; 
+  }
+  .card-contrasenia{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(50%, 850%);
+    width: 20px; 
+    height: auto; 
+  }
+
+  .input-container {
+    position: absolute;
+    margin: 10px 0;
+  }
+  .input-field {
+    font-size: 13px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #464B4B; 
+    outline: none;
+    width: calc(150% - 10px);
+    padding:  -10px 80px 2px 400px; 
+    position: relative;
+    top:-50px;
+    left:-18px;
+  }
+  
+  .input-icon {
+    position: relative;
+    top: 100%;
+    left: -50px;
+    transform: translateY(-110%);
+    color: #aaa; 
+  }
+  
+  .input-field::placeholder {
+    color: #464B4B; 
+  }
+  
+  .input-field:focus {
+    border-bottom: 2px solid #5D3FD3;
+    transition: border-color 0.1s;
+  }
+  
+  
+  .input-field::-webkit-outer-spin-button,
+  .input-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .input-field[type="number"] {
+    -moz-appearance: textfield; 
+  }
+  
+
+
+  .inputPassword-container {
+    position: absolute;
+    margin: 10px 0;
+  }
+  .inputPassword-field {
+    font-size: 13px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #464B4B; 
+    outline: none;
+    width: calc(145% - 0px); 
+    margin-top: 20px; 
+    padding:  -20px 80px 1px 300px; 
+    position: relative;
+    top:-10px;
+    left:-20px;
+  }
+  
+  .inputPassword-icon {
+    position: relative;
+    top:35px;
+    left: -50px;
+    transform: translateY(-10%);
+    color: #aaa; 
+  }
+  
+  .inputPassword-field::placeholder {
+    color: #464B4B; 
+  }
+  
+  .inputPassword-field:focus {
+    border-bottom: 2px solid #5D3FD3;
+    transition: border-color 0.1s;
+  }
+  
+  .inputPassword-field::-webkit-outer-spin-button,
+  .inputPassword-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .inputPassword-field[type="number"] {
+    -moz-appearance: textfield; 
+  }
+  .login-button {
+    position:absolute;
+    padding: 8px 60px; 
+    background-color: #380F42; 
+    color: white; 
+    border: none; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    margin-top: 210px; 
+    margin-left: 10px;
+    white-space: nowrap;
+  }
+  
+  .login-button:hover {
+    background-color: #4c32a8; 
+  }
+  
+  .forgot-password-label {
+    cursor: pointer; 
+    white-space: nowrap; 
+    margin-top: 120px;
+    margin-right: -10px;
+    font-size: 12px;
+    color: #464B4B;
+    font-weight: bolder;
+}
