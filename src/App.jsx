@@ -3,16 +3,13 @@ import { Button, Flex, Box, Image, Avatar, Text, ChakraProvider } from "@chakra-
 import { FaHome, FaBox, FaFileAlt, FaTools, FaPowerOff, FaChartBar } from 'react-icons/fa';
 import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
+import { Link } from 'react-router-dom';
 import Dashboard from './paginas/Dashboard';
-import ConstructionPage from './paginas/PaginaEnConstruccion';
-import AgregarNuevaSolicitudPrimeraParte from './paginas/solicitudes/AgregarNuevaSolicitudPrimeraParte';
-import AgregarNuevaSolicitudSegundaParte from './paginas/solicitudes/AgregarNuevaSolicitudSegundaParte';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <BrowserRouter>
         <Flex height="100vh" overflow="hidden" width="100vw">
           <Flex
             flex="0 0 auto"
@@ -60,19 +57,15 @@ function App() {
               <Link to="/en-proceso" style={{ width: '100%' }}>
                 <Button leftIcon={<FaTools />} sx={buttonStyle}>Configuraciones</Button>
               </Link>
+              <Link to="/" style={{ width: '100%' }}>
               <Button leftIcon={<FaPowerOff />} sx={buttonStyle}>Cerrar sesión</Button>
+              </Link>
             </Flex>
           </Flex>
           <Box flex="1">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/en-proceso" element={<ConstructionPage />} />
-              <Route path="/nueva-solicitud" element={<AgregarNuevaSolicitudPrimeraParte />} />
-              <Route path="/nueva-solicitud/segunda-parte" element={<AgregarNuevaSolicitudSegundaParte />} />
-            </Routes>
+            <Dashboard />
           </Box>
         </Flex>
-      </BrowserRouter>
     </ChakraProvider>
   );
 }
