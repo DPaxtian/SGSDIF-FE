@@ -67,6 +67,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/en-proceso" element={<ConstructionPage />} />
+              <Route path="/nueva-solicitud" element={<AgregarNuevaSolicitudPrimeraParte />} />
+              <Route path="/nueva-solicitud/segunda-parte" element={<AgregarNuevaSolicitudSegundaParte />} />
             </Routes>
           </Box>
         </Flex>

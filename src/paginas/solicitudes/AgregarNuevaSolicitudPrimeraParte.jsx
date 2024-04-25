@@ -1,13 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Select } from '@chakra-ui/react';
 
 const AgregarNuevaSolicitudPrimeraParte = ({ onNext }) => {
+  const navigate = useNavigate();
   const { handleSubmit, register, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
-    onNext(data);
+    // Aquí puedes guardar los datos en el estado global o realizar alguna acción antes de navegar
+    navigate('/nueva-solicitud/segunda-parte');
   };
 
   return (
@@ -59,7 +62,7 @@ const AgregarNuevaSolicitudPrimeraParte = ({ onNext }) => {
             </FormControl>
 
             <FormControl isInvalid={errors.apellido2}>
-              <FormLabel htmlFor="apellido2">Segundo Apellido:</FormLabel>
+              <FormLabel htmlFor="apellido2">Segundo Apellido*:</FormLabel>
               <Input id="apellido2" borderColor="#252526" width="330px" {...register("apellido2", { required: "Este campo es requerido" })} />
               <FormErrorMessage>{errors.apellido2 && errors.apellido2.message}</FormErrorMessage>
             </FormControl>
