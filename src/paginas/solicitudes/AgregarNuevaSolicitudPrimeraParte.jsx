@@ -22,6 +22,9 @@ const AgregarNuevaSolicitudPrimeraParte = ({ onNext }) => {
       alignItems="flex-start"
       p={14}
       width="95%"
+      maxH="90vh" // Establecer una altura máxima
+      overflowY="auto" 
+      overflowX="hidden"
       height="90%"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
     >
