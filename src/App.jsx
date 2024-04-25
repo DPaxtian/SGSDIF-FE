@@ -6,13 +6,21 @@ import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
 import Dashboard from './paginas/Dashboard';
 import ConstructionPage from './paginas/PaginaEnConstruccion';
+import AgregarNuevaSolicitudPrimeraParte from './paginas/solicitudes/AgregarNuevaSolicitudPrimeraParte';
+import AgregarNuevaSolicitudSegundaParte from './paginas/solicitudes/AgregarNuevaSolicitudSegundaParte';
 
 function App() {
   
   const [activeCategory, setActiveCategory] = useState("dashboard");
+  const [formData, setFormData] = useState({});
 
   const changeCategory = (category) => () => {
     setActiveCategory(category);
+  };
+
+  const handleNext = (data) => {
+    setFormData(data);
+    setActiveCategory('solicitud2');
   };
 
   const renderContent = () => {
@@ -20,7 +28,9 @@ function App() {
       case "dashboard":
         return <Dashboard />;
       case "solicitud":
-        return <AgregarNuevaSolicitud />;
+        return <AgregarNuevaSolicitudPrimeraParte onNext={handleNext} />;
+      case "solicitud2":
+        return <AgregarNuevaSolicitudSegundaParte formData={formData} />;
       case "enProceso":
         return <ConstructionPage/>;
     }
@@ -36,7 +46,7 @@ function App() {
         >
           <Flex
             flex="0 0 auto"
-            width="180px"
+            width="300px"
             flexDirection='column'
             justifyContent='flex-start'
             alignItems='center'
@@ -77,7 +87,7 @@ function App() {
 
           </Flex>
 
-          <Box flex="1">
+          <Box flex="1" alignContent="center">
             {renderContent()}
           </Box>
         </Flex>
