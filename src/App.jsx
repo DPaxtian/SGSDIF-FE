@@ -1,87 +1,76 @@
-import { useState } from 'react'
-import { Button, Flex, Box, Container, Image, Avatar, Text } from "@chakra-ui/react";
+import React from 'react';
+import { Button, Flex, Box, Image, Avatar, Text, ChakraProvider } from "@chakra-ui/react";
 import { FaHome, FaBox, FaFileAlt, FaTools, FaPowerOff, FaChartBar } from 'react-icons/fa';
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
 import Dashboard from './paginas/Dashboard';
 import ConstructionPage from './paginas/PaginaEnConstruccion';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
-  
-  const [activeCategory, setActiveCategory] = useState("dashboard");
-
-  const changeCategory = (category) => () => {
-    setActiveCategory(category);
-  };
-
-  const renderContent = () => {
-    switch (activeCategory) {
-      case "dashboard":
-        return <Dashboard />;
-      case "enProceso":
-        return <ConstructionPage/>;
-    }
-  };
-
   return (
     <ChakraProvider theme={theme}>
-      <>
-        <Flex
-          height="100vh"
-          overflow="hidden"
-          width="100vw"
-        >
+      <BrowserRouter>
+        <Flex height="100vh" overflow="hidden" width="100vw">
           <Flex
             flex="0 0 auto"
             width="180px"
-            flexDirection='column'
-            justifyContent='flex-start'
-            alignItems='center'
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="center"
             backgroundImage="../src/assets/img/nav_background.png"
-            backgroundSize='65%'
-            backgroundPosition='left bottom'
-            backgroundRepeat='no-repeat'
+            backgroundSize="65%"
+            backgroundPosition="left bottom"
+            backgroundRepeat="no-repeat"
             paddingTop="0"
             paddingBottom="0"
             margin="0"
           >
             <Box
-              display='flex'
-              flexDirection='column'
-              alignItems='center'
-              justifyContent='center'
-              width='100%'
-              marginTop='0' 
-              marginBottom='0'
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+              marginTop="0"
+              marginBottom="0"
               paddingBottom="30px"
               paddingTop="15px"
             >
-              <Image src='/src/assets/img/dif_logo.png' h='40px' alt='DIF Xalapa' marginBottom='16px' />
-              <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='xl' marginBottom='8px' />
-              <Text fontSize='md' color='#310E3A'>Marlon Montiel Pérez</Text>
-              <Text fontSize='xs' color='#310E3A'>Buen dia!</Text>
+              <Image src="/src/assets/img/dif_logo.png" h="40px" alt="DIF Xalapa" marginBottom="16px" />
+              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" size="xl" marginBottom="8px" />
+              <Text fontSize="md" color="#310E3A">Marlon Montiel Pérez</Text>
+              <Text fontSize="xs" color="#310E3A">Buen dia!</Text>
             </Box>
-
-
-            <Flex flexDirection='column' alignItems='center' width='100%'>
-              <Button onClick={changeCategory("dashboard")} leftIcon={<FaHome />} width='100%' sx={buttonStyle}>Dashboard</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaBox />} width='100%' sx={buttonStyle}>Solicitudes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaFileAlt />} width='100%' sx={buttonStyle}>Inventario</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaChartBar />} width='100%' sx={buttonStyle}>Reportes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaTools />} width='100%' sx={buttonStyle}>Configuraciones</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaPowerOff />} width='100%' sx={buttonStyle}>Cerrar sesión</Button>
+            <Flex flexDirection="column" alignItems="center" width="100%">
+              <Link to="/" style={{ width: '100%' }}>
+                <Button leftIcon={<FaHome />} sx={buttonStyle}>Dashboard</Button>
+              </Link>
+              <Link to="/en-proceso" style={{ width: '100%' }}>
+                <Button leftIcon={<FaBox />} sx={buttonStyle}>Solicitudes</Button>
+              </Link>
+              <Link to="/en-proceso" style={{ width: '100%' }}>
+                <Button leftIcon={<FaFileAlt />} sx={buttonStyle}>Inventario</Button>
+              </Link>
+              <Link to="/en-proceso" style={{ width: '100%' }}>
+                <Button leftIcon={<FaChartBar />} sx={buttonStyle}>Reportes</Button>
+              </Link>
+              <Link to="/en-proceso" style={{ width: '100%' }}>
+                <Button leftIcon={<FaTools />} sx={buttonStyle}>Configuraciones</Button>
+              </Link>
+              <Button leftIcon={<FaPowerOff />} sx={buttonStyle}>Cerrar sesión</Button>
             </Flex>
-
           </Flex>
-
           <Box flex="1">
-          {renderContent()}
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/en-proceso" element={<ConstructionPage />} />
+            </Routes>
           </Box>
         </Flex>
-      </>
+      </BrowserRouter>
     </ChakraProvider>
-  )
+  );
 }
 
-export default App
+export default App;
