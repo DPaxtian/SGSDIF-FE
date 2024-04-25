@@ -21,7 +21,7 @@ function Login() {
                     <input
                         type="text"
                         className="input-field"
-                        placeholder={showPlaceholder.user ? "user" : ""}
+                        placeholder={showPlaceholder.user ? "Usuario" : ""}
                         onFocus={() => setShowPlaceholder({ ...showPlaceholder, user: false })}
                         onBlur={() => setShowPlaceholder({ ...showPlaceholder, user: true })}
                     />
@@ -31,14 +31,14 @@ function Login() {
                     <input
                         type="password"
                         className="inputPassword-field"
-                        placeholder={showPlaceholder.password ? "password" : ""}
+                        placeholder={showPlaceholder.password ? "Contraseña" : ""}
                         onFocus={() => setShowPlaceholder({ ...showPlaceholder, password: false })}
                         onBlur={() => setShowPlaceholder({ ...showPlaceholder, password: true })}
                     />
                 </div>
-                <button type="submit" className="login-button">Log in</button> 
+                <button type="submit" className="login-button">Iniciar sesión</button> 
                 <label className="forgot-password-label">
-                    Forgot password?
+                    ¿Olvidaste tu contraseña?
                 </label>
             </div>
         </div>
