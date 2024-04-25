@@ -5,6 +5,8 @@ import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
 import Dashboard from './paginas/Dashboard';
 import ConstructionPage from './paginas/PaginaEnConstruccion';
+import AgregarNuevaSolicitudPrimeraParte from './paginas/solicitudes/AgregarNuevaSolicitudPrimeraParte';
+import AgregarNuevaSolicitudSegundaParte from './paginas/solicitudes/AgregarNuevaSolicitudSegundaParte';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
