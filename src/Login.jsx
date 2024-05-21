@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css'; 
 import imagenFondoLogin from './assets/img/fondoLogin.png';
-import loginXalapa from './assets/img/logoXalapa.jpg';
 import difLogo from './assets/img/dif_logo.png';
 import logoAyuntamiento from './assets/img/logoAyuntamiento.png';
 import iconoUser from './assets/img/usuario.png';
@@ -13,7 +12,7 @@ function Login() {
     return (
         <div className="login-form-container">
             <div className="card">
-                <img src={loginXalapa} className="card-xalapa"/>
+                
                 <img src={difLogo} className="card-dif"/>
                 <img src={logoAyuntamiento} className="card-ayuntamiento"/>
                 <div className="input-container">

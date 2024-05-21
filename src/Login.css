@@ -18,25 +18,17 @@
     border-radius: 40px; 
   }
   .card-dif{
-    position: absolute;
-    top: 20%;
-    left: 40%;
+    position: relative;
+    top: -30%;
+    left: 22%;
     transform: translate(-5%, 5%);
     width: 70px; 
     height: auto; 
   }
-  .card-xalapa{
-    position: absolute;
-    top: 19%;
-    left: 31.5%;
-    transform: translate(120%, 8%);
-    width: 150px; 
-    height:80px; 
-  }
   .card-ayuntamiento{
-    position: absolute;
-    top: 20%;
-    left: 40%;
+    position: relative;
+    top: -31%;
+    left: -18%;
     transform: translate(280%, 25%);
     width: 75px; 
     height: auto; 
@@ -171,7 +163,7 @@
     cursor: pointer; 
     white-space: nowrap; 
     margin-top: 120px;
-    margin-right: -10px;
+    margin-right: 125px;
     font-size: 12px;
     color: #464B4B;
     font-weight: bolder;
