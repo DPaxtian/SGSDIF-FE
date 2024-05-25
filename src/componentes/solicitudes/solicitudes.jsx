@@ -25,7 +25,7 @@ export default function Solicitudes() {
     >
       <GridItem>
         <Flex justify="space-between" align="center" mb="4">
-          <Input placeholder="Buscar..." w="30%" />
+          <Input placeholder="Buscar..." w="30%" borderColor="#252526" />
 
           <Menu>
             <MenuButton
