@@ -1,12 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 import BarraNavegacion from "./componentes/barra-navegacion/barra-navegacion";
+import SolicitudesPagina from "./paginas/solicitudes-pagina";
 
 const configuracionRutas = [
   { ruta: "/", elemento: <h1>Inicio</h1> },
   { ruta: "/inicio-sesion", elemento: <h1>Inicio Sesión</h1> },
   { ruta: "/registro", elemento: <h1>Registro</h1> },
-  { ruta: "/solicitudes", elemento: <h1>Solicitudes</h1> },
+  { ruta: "/solicitudes", elemento: <SolicitudesPagina /> },
+  {
+    ruta: "/solicitudes/agregar-solicitud",
+    elemento: <h1>Agregar nueva solicitud</h1>,
+  },
   { ruta: "/inventario", elemento: <h1>Inventario</h1> },
   { ruta: "/reportes", elemento: <h1>Reportes</h1> },
   { ruta: "/configuraciones", elemento: <h1>Configuraciones</h1> },
