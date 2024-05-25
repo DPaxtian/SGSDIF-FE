@@ -1,88 +1,38 @@
-import { useState } from 'react'
-import { Button, Flex, Box, Container, Image, Avatar, Text } from "@chakra-ui/react";
-import { FaHome, FaBox, FaFileAlt, FaTools, FaPowerOff, FaChartBar } from 'react-icons/fa';
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { theme } from './estilos/theme';
-import { buttonStyle } from './estilos/buttonStyle';
-import Dashboard from './paginas/Dashboard';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Box, Flex } from "@chakra-ui/react";
+import BarraNavegacion from "./componentes/barra-navegacion/barra-navegacion";
 
-const EnProcesoContent = () => <Box>En proceso de construccion :)!</Box>;
+const configuracionRutas = [
+  { ruta: "/", elemento: <h1>Inicio</h1> },
+  { ruta: "/inicio-sesion", elemento: <h1>Inicio Sesión</h1> },
+  { ruta: "/registro", elemento: <h1>Registro</h1> },
+  { ruta: "/solicitudes", elemento: <h1>Solicitudes</h1> },
+  { ruta: "/inventario", elemento: <h1>Inventario</h1> },
+  { ruta: "/reportes", elemento: <h1>Reportes</h1> },
+  { ruta: "/configuraciones", elemento: <h1>Configuraciones</h1> },
+];
+
+const RutasApp = () => (
+  <Routes>
+    {configuracionRutas.map((ruta) => (
+      <Route key={ruta.ruta} path={ruta.ruta} element={ruta.elemento} />
+    ))}
+  </Routes>
+);
 
 function App() {
-  
-  const [activeCategory, setActiveCategory] = useState("dashboard");
-
-  const changeCategory = (category) => () => {
-    setActiveCategory(category);
-  };
-
-  const renderContent = () => {
-    switch (activeCategory) {
-      case "dashboard":
-        return <Dashboard />;
-      case "enProceso":
-        return <EnProcesoContent />;
-    }
-  };
-
   return (
-    <ChakraProvider theme={theme}>
-      <>
-        <Flex
-          height="100vh"
-          overflow="hidden"
-          width="100vw"
-        >
-          <Flex
-            flex="0 0 auto"
-            width="180px"
-            flexDirection='column'
-            justifyContent='flex-start'
-            alignItems='center'
-            backgroundImage="../src/assets/img/nav_background.png"
-            backgroundSize='65%'
-            backgroundPosition='left bottom'
-            backgroundRepeat='no-repeat'
-            paddingTop="0"
-            paddingBottom="0"
-            margin="0"
-          >
-            <Box
-              display='flex'
-              flexDirection='column'
-              alignItems='center'
-              justifyContent='center'
-              width='100%'
-              marginTop='0' 
-              marginBottom='0'
-              paddingBottom="30px"
-              paddingTop="15px"
-            >
-              <Image src='/src/assets/img/dif_logo.png' h='40px' alt='DIF Xalapa' marginBottom='16px' />
-              <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='xl' marginBottom='8px' />
-              <Text fontSize='md' color='#310E3A'>Nombre Usuario</Text>
-              <Text fontSize='xs' color='#310E3A'>Buen dia!</Text>
-            </Box>
-
-
-            <Flex flexDirection='column' alignItems='center' width='100%'>
-              <Button onClick={changeCategory("dashboard")} leftIcon={<FaHome />} width='100%' sx={buttonStyle}>Dashboard</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaBox />} width='100%' sx={buttonStyle}>Solicitudes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaFileAlt />} width='100%' sx={buttonStyle}>Inventario</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaChartBar />} width='100%' sx={buttonStyle}>Reportes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaTools />} width='100%' sx={buttonStyle}>Configuraciones</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaPowerOff />} width='100%' sx={buttonStyle}>Cerrar sesión</Button>
-            </Flex>
-
-          </Flex>
-
-          <Box flex="1">
-          {renderContent()}
-          </Box>
-        </Flex>
-      </>
-    </ChakraProvider>
-  )
+    <BrowserRouter>
+      <Flex>
+        <Box w="300px" bg="gray.200">
+          <BarraNavegacion />
+        </Box>
+        <Box flex="1" p="10" alignContent="center">
+          <RutasApp />
+        </Box>
+      </Flex>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
