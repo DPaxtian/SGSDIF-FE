@@ -75,7 +75,7 @@ const AgregarExistencias = () => {
                     cantidad: '',
                     descripcion: '',
                 });
-            }if (response.data.code === 400) {
+            } else if (response.data.code === 400) {
                 toast({
                     title: "Datos Invalidos",
                     description: "Algunos datos son invalidos, por favor revisalos",
