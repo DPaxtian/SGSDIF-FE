@@ -5,6 +5,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { theme } from './estilos/theme';
 import { buttonStyle } from './estilos/buttonStyle';
 import Dashboard from './paginas/Dashboard';
+import Inventario from './paginas/Inventario'
 
 const EnProcesoContent = () => <Box>En proceso de construccion :)!</Box>;
 
@@ -22,6 +23,8 @@ function App() {
         return <Dashboard />;
       case "enProceso":
         return <EnProcesoContent />;
+      case "inventario":
+        return <Inventario/>;
     }
   };
 
@@ -68,9 +71,8 @@ function App() {
             <Flex flexDirection='column' alignItems='center' width='100%'>
               <Button onClick={changeCategory("dashboard")} leftIcon={<FaHome />} width='100%' sx={buttonStyle}>Dashboard</Button>
               <Button onClick={changeCategory("enProceso")} leftIcon={<FaBox />} width='100%' sx={buttonStyle}>Solicitudes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaFileAlt />} width='100%' sx={buttonStyle}>Inventario</Button>
+              <Button onClick={changeCategory("inventario")} leftIcon={<FaFileAlt />} width='100%' sx={buttonStyle}>Inventario</Button>
               <Button onClick={changeCategory("enProceso")} leftIcon={<FaChartBar />} width='100%' sx={buttonStyle}>Reportes</Button>
-              <Button onClick={changeCategory("enProceso")} leftIcon={<FaTools />} width='100%' sx={buttonStyle}>Configuraciones</Button>
               <Button onClick={changeCategory("enProceso")} leftIcon={<FaPowerOff />} width='100%' sx={buttonStyle}>Cerrar sesión</Button>
             </Flex>
 
