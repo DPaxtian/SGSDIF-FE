@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   Box,
@@ -7,6 +7,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  IconButton,
   Input,
   Select,
   Step,
@@ -21,6 +22,8 @@ import {
   Textarea,
   useSteps,
 } from "@chakra-ui/react";
+import { IconContext } from "react-icons";
+import { FiFolderPlus } from "react-icons/fi";
 
 const steps = [
   { title: "Datos Personales", description: "Nombre, apellido y dirección" },
@@ -209,32 +212,114 @@ const DatosPersonales = ({ register, errors }) => (
   </>
 );
 
-const Observaciones = ({ register }) => (
-  <FormControl>
-    <FormLabel>Observaciones</FormLabel>
-    <Textarea {...register("observaciones")} />
-  </FormControl>
-);
+const Observaciones = ({ register, errors }) => {
+  const inputRef = useRef(null);
+
+  return (
+    <>
+      <Box mb={4} fontSize="28px">
+        Completa los campos referentes al apoyo solicitado
+      </Box>
+
+      <Box mb={4} fontSize="18px">
+        Los campos marcados con * son obligatorios
+      </Box>
+
+      <Flex
+        flexDirection="row"
+        justifyContent="space-between"
+        width="100%"
+        gap={18}
+      >
+        <FormControl isInvalid={errors.apoyoSolicitado}>
+          <FormLabel htmlFor="apoyoSolicitado">Apoyo solicitado*:</FormLabel>
+          <Select
+            width="500px"
+            id="apoyoSolicitado"
+            borderColor="#252526"
+            {...register("apoyoSolicitado", {
+              required: "Este campo es requerido",
+            })}
+          >
+            <option value="">Selecciona una opción</option>
+            <option value="1">Laminas</option>
+          </Select>
+          <FormErrorMessage>
+            {errors.apoyoSolicitado && errors.apoyoSolicitado.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={errors.fechaSolicitud}>
+          <FormLabel htmlFor="fechaSolicitud">Fecha de solicitud*:</FormLabel>
+          <Input
+            id="fechaSolicitud"
+            width="500px"
+            borderColor="#252526"
+            {...register("fechaSolicitud", {
+              required: "Este campo es requerido",
+            })}
+          />
+          <FormErrorMessage>
+            {errors.fechaSolicitud && errors.fechaSolicitud.message}
+          </FormErrorMessage>
+        </FormControl>
+      </Flex>
+
+      <FormControl isInvalid={errors.observaciones}>
+        <FormLabel htmlFor="observaciones">Observaciones*:</FormLabel>
+        <Input
+          id="observaciones"
+          height="200px"
+          alignContent="flex-start"
+          borderColor="#252526"
+          {...register("observaciones", {
+            required: "Este campo es requerido",
+          })}
+        />
+        <FormErrorMessage>
+          {errors.observaciones && errors.observaciones.message}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={errors.archivo}>
+        <FormLabel htmlFor="archivo">Subir archivo*:</FormLabel>
+        <Input
+          type="file"
+          id="archivo"
+          display="none"
+          {...register("archivo", { required: "Este campo es requerido" })}
+          ref={inputRef}
+        />
+        <IconButton
+          icon={
+            <IconContext.Provider value={{ size: "80px" }}>
+              <FiFolderPlus />
+            </IconContext.Provider>
+          }
+          onClick={() => inputRef.current && inputRef.current.click()}
+          aria-label="Subir archivo"
+          height="200px"
+          width="1200px"
+        />
+        <FormErrorMessage>
+          {errors.archivo && errors.archivo.message}
+        </FormErrorMessage>
+      </FormControl>
+    </>
+  );
+};
 
 export default function AgregarSolicitud() {
+  const { activeStep, setActiveStep, goToNext, goToPrevious } = useSteps({
+    initialStep: 0,
+  });
+
   const methods = useForm();
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = methods;
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
-
-  const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-  };
 
   const onSubmit = (data) => {
     console.log(data);
@@ -243,7 +328,7 @@ export default function AgregarSolicitud() {
   return (
     <FormProvider {...methods}>
       <Box p={4}>
-        <Stepper index={activeStep}>
+        <Stepper index={activeStep} orientation="horizontal">
           {steps.map((step, index) => (
             <Step key={index}>
               <StepIndicator>
@@ -264,26 +349,29 @@ export default function AgregarSolicitud() {
           ))}
         </Stepper>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {activeStep === 0 && (
-            <DatosPersonales register={register} errors={errors} />
-          )}
-          {activeStep === 1 && <Observaciones register={register} />}
+        <Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {activeStep === 0 && (
+              <DatosPersonales register={register} errors={errors} />
+            )}
+            {activeStep === 1 && (
+              <Observaciones register={register} errors={errors} />
+            )}
 
-          <Flex mt={4}>
-            {activeStep !== 0 && (
-              <Button onClick={handleBack} mr={4}>
-                Atrás
-              </Button>
-            )}
-            {activeStep < steps.length - 1 && (
-              <Button onClick={handleNext}>Siguiente</Button>
-            )}
-            {activeStep === steps.length - 1 && (
-              <Button type="submit">Enviar</Button>
-            )}
-          </Flex>
-        </form>
+            <Flex mt={4}>
+              {activeStep > 0 && (
+                <Button mr={4} onClick={goToPrevious}>
+                  Atrás
+                </Button>
+              )}
+              {activeStep < steps.length - 1 ? (
+                <Button onClick={goToNext}>Siguiente</Button>
+              ) : (
+                <Button type="submit">Registrar nueva solicitud</Button>
+              )}
+            </Flex>
+          </form>
+        </Box>
       </Box>
     </FormProvider>
   );
