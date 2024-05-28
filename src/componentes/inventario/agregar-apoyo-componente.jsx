@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Button,
-    Flex,
-    Heading,
     FormControl,
     FormLabel,
     Input,
     Select,
     Stack,
+    Heading,
     Text,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    Icon,
     HStack,
     useToast,
+    Flex
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { FaPlusSquare, FaClipboardList } from 'react-icons/fa';
 
 const TipoApoyos = [
     "Municipal",
     "Estatal"
 ];
 
-const AgregarExistencias = () => {
+const AgregarApoyo = () => {
     const toast = useToast();
     const [formData, setFormData] = useState({
         identificador: '',
@@ -45,16 +40,13 @@ const AgregarExistencias = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem('token_acceso'); // Suponiendo que el token está almacenado en localStorage
+        const token = localStorage.getItem('token_acceso');
         const formDataWithInt = {
             ...formData,
             cantidad: parseInt(formData.cantidad, 10)
         };
-        console.log("Token:", token);
-        console.log("Form Data:", formDataWithInt);
-        console.log(import.meta.env.VITE_APP_APOYOS_API_URL)
         try {
-            const response = await axios.post(`${import.meta.env.VITE_APP_APOYOS_API_URL}/api/v1/catalogo_apoyos/crear_apoyo`, formDataWithInt, {
+            const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/v1/catalogo_apoyos/crear_apoyo`, formDataWithInt, {
                 headers: {
                     'token_acceso': token
                 }
@@ -67,7 +59,7 @@ const AgregarExistencias = () => {
                     duration: 3000,
                     isClosable: true,
                 });
-                // Limpia el formulario
+
                 setFormData({
                     identificador: '',
                     nombre: '',
@@ -104,7 +96,7 @@ const AgregarExistencias = () => {
     };
 
     return (
-        <Flex direction="column" height="100vh" p={5} borderWidth={1} borderRadius="lg" boxShadow="lg" width="100%" mx="auto">
+        <Flex direction="column" p={5} borderWidth={1} borderRadius="lg" boxShadow="lg" width="100%" height="100%" mx="auto">
             <Heading as="h3" size="lg" mb={5}>Completa los campos para agregar nuevas existencias al inventario:</Heading>
             <Text mb={5}>Los campos que contienen un * son obligatorios</Text>
             <Stack spacing={4} as="form" onSubmit={handleSubmit}>
@@ -179,86 +171,4 @@ const AgregarExistencias = () => {
     );
 };
 
-const VerInventario = () => (
-    <Box p={5} borderWidth={1} borderRadius="lg" boxShadow="lg">
-        <Heading as="h3" size="lg">Ver Inventario</Heading>
-        {/* Aquí puedes agregar la lógica para mostrar el inventario */}
-    </Box>
-);
-
-const Inventario = () => {
-    const [view, setView] = useState('menu');
-
-    localStorage.setItem('token_acceso', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiNjYzMDY5OGZiMTA2MjM3YWJlMmZkMjQ2Iiwibm9tYnJlX3VzdWFyaW8iOiJkcGF4dGlhbiIsImFwZWxsaWRvX3BhdGVybm8iOiJBbm90YSIsInJvbCI6IkFkbWluaXN0cmFkb3IiLCJpYXQiOjE3MTY3NTkwNzAsImV4cCI6MTcxNjc4MDY3MH0.BvMsD4WDed-eFj_FHeundaJwgy5g2b8bW3o3EBefUXA");
-    const renderView = () => {
-        switch (view) {
-            case 'menu':
-                return (
-                    <Flex
-                        height="100vh"
-                        width="100vw"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <Button
-                            onClick={() => setView('agregar')}
-                            leftIcon={<Icon as={FaPlusSquare} w={8} h={8} />}
-                            m={2}
-                            colorScheme="blue"
-                            variant="outline"
-                            size="lg"
-                            p={10}
-                            height="150px"
-                            width="200px"
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                        >
-                            <Text mt={4}>Agregar existencias</Text>
-                        </Button>
-                        <Button
-                            onClick={() => setView('ver')}
-                            leftIcon={<Icon as={FaClipboardList} w={8} h={8} />}
-                            m={2}
-                            colorScheme="blue"
-                            variant="outline"
-                            size="lg"
-                            p={10}
-                            height="150px"
-                            width="200px"
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                        >
-                            <Text mt={4}>Ver inventario</Text>
-                        </Button>
-                    </Flex>
-                );
-            case 'agregar':
-                return <AgregarExistencias />;
-            case 'ver':
-                return <VerInventario />;
-            default:
-                return null;
-        }
-    };
-
-    return (
-        <Box p={5}>
-            <Breadcrumb mb={5}>
-                <BreadcrumbItem>
-                    <BreadcrumbLink onClick={() => setView('menu')}>Inventario</BreadcrumbLink>
-                </BreadcrumbItem>
-                {view !== 'menu' && (
-                    <BreadcrumbItem isCurrentPage>
-                        <BreadcrumbLink>{view === 'agregar' ? 'Agregar existencias' : 'Ver inventario'}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                )}
-            </Breadcrumb>
-
-            {renderView()}
-        </Box>
-    );
-};
-
-export default Inventario;
+export default AgregarApoyo;
