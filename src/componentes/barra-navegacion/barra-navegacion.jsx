@@ -39,13 +39,13 @@ const ContenidoBarra = ({ onClose, ...rest }) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="center">
         <Image
-          src="src/assets/imagenes/xalapa-logo.png"
+          src="src/assets/img/xalapa-logo.png"
           width={12}
           height={12}
         />
         <Box mx="2" />
         <Image
-          src="src/assets/imagenes/dif-xalapa-logo.png"
+          src="src/assets/img/dif-xalapa-logo.png"
           width={12}
           height={12}
         />
@@ -60,7 +60,7 @@ const ContenidoBarra = ({ onClose, ...rest }) => {
       ))}
 
       <Image
-        src="src/assets/imagenes/barra-navegacion/barra-navegacion-fondo.png"
+        src="src/assets/img/barra-navegacion/barra-navegacion-fondo.png"
         position="absolute"
         bottom="0"
       />
