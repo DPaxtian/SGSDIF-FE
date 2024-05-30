@@ -8,6 +8,10 @@ import {
   FiTruck,
   FiBarChart,
 } from "react-icons/fi";
+import xalapaLogo from '../../assets/img/xalapa-logo.png';
+import difXalapaLogo from '../../assets/img/dif-xalapa-logo.png';
+import fondoBarra from '../../assets/img/barra-navegacion-fondo.png';
+
 
 const rutas = [
   { nombre: "Inicio", icono: FiHome, ruta: "/" },
@@ -39,13 +43,13 @@ const ContenidoBarra = ({ onClose, ...rest }) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="center">
         <Image
-          src="src/assets/imagenes/xalapa-logo.png"
+          src={xalapaLogo}
           width={12}
           height={12}
         />
         <Box mx="2" />
         <Image
-          src="src/assets/imagenes/dif-xalapa-logo.png"
+          src={difXalapaLogo}
           width={12}
           height={12}
         />
@@ -60,7 +64,7 @@ const ContenidoBarra = ({ onClose, ...rest }) => {
       ))}
 
       <Image
-        src="src/assets/imagenes/barra-navegacion/barra-navegacion-fondo.png"
+        src={fondoBarra}
         position="absolute"
         bottom="0"
       />
