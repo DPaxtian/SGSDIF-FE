@@ -126,7 +126,7 @@ Crea un archivo llamado .env en la raíz del proyecto y solicita las variables d
 6. **Ejecuta el proyecto:**
    Una vez que todas las dependencias estén instaladas, puedes ejecutar el proyecto en modo de desarrollo. Utiliza el siguiente comando para iniciar el proyecto con Nodemon, que reflejará automáticamente los cambios en el código sin necesidad de reiniciar el servidor:
    ```
-   npm start
+   npm run dev
    ```
 
 7. **Verifica que el proyecto esté funcionando:**
