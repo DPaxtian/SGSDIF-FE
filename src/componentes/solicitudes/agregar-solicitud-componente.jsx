@@ -26,22 +26,55 @@ import { IconContext } from "react-icons";
 import { FiFolderPlus } from "react-icons/fi";
 
 const steps = [
-  { title: "Datos Personales", description: "Nombre, apellido y dirección" },
-  { title: "Observaciones", description: "Comentarios adicionales" },
+  { title: "Datos personales", description: "Nombre, apellido y dirección" },
+  { title: "Datos de la solicitud", description: "Comentarios adicionales" },
 ];
 
 const DatosPersonales = ({ register, errors }) => (
   <>
-    <FormControl isInvalid={errors.curp}>
-      <FormLabel htmlFor="curp">CURP*:</FormLabel>
-      <Input
-        id="curp"
-        borderColor="#252526"
-        width="403px"
-        {...register("curp", { required: "Este campo es requerido" })}
-      />
-      <FormErrorMessage>{errors.curp && errors.curp.message}</FormErrorMessage>
-    </FormControl>
+    <Box mb={4} fontSize="28px">
+      Completa los campos referentes al solicitante del apoyo
+    </Box>
+
+    <Box mb={4} fontSize="18px">
+      Los campos marcados con * son obligatorios
+    </Box>
+
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      width="100%"
+      gap={18}
+    >
+      <FormControl isInvalid={errors.curp}>
+        <FormLabel htmlFor="curp">CURP*:</FormLabel>
+        <Input
+          id="curp"
+          borderColor="#252526"
+          width="403px"
+          {...register("curp", { required: "Este campo es requerido" })}
+        />
+        <FormErrorMessage>
+          {errors.curp && errors.curp.message}
+        </FormErrorMessage>
+      </FormControl>
+
+      <FormControl isInvalid={errors.colonia}>
+        <FormLabel htmlFor="colonia">Genero*:</FormLabel>
+        <Select
+          id="genero"
+          borderColor="#252526"
+          {...register("genero", { required: "Este campo es requerido" })}
+        >
+          <option value="">Selecciona una opción</option>
+          <option value="1">Hombre</option>
+          <option value="1">Mujer</option>
+        </Select>
+        <FormErrorMessage>
+          {errors.colonia && errors.colonia.message}
+        </FormErrorMessage>
+      </FormControl>
+    </Flex>
 
     <Flex
       flexDirection="row"
@@ -252,6 +285,7 @@ const Observaciones = ({ register, errors }) => {
         <FormControl isInvalid={errors.fechaSolicitud}>
           <FormLabel htmlFor="fechaSolicitud">Fecha de solicitud*:</FormLabel>
           <Input
+            type="date"
             id="fechaSolicitud"
             width="500px"
             borderColor="#252526"
@@ -267,9 +301,9 @@ const Observaciones = ({ register, errors }) => {
 
       <FormControl isInvalid={errors.observaciones}>
         <FormLabel htmlFor="observaciones">Observaciones*:</FormLabel>
-        <Input
+        <Textarea
           id="observaciones"
-          height="200px"
+          height="100px"
           alignContent="flex-start"
           borderColor="#252526"
           {...register("observaciones", {
@@ -298,8 +332,8 @@ const Observaciones = ({ register, errors }) => {
           }
           onClick={() => inputRef.current && inputRef.current.click()}
           aria-label="Subir archivo"
-          height="200px"
-          width="1200px"
+          height="100px"
+          width="1020px"
         />
         <FormErrorMessage>
           {errors.archivo && errors.archivo.message}
@@ -327,7 +361,17 @@ export default function AgregarSolicitud() {
 
   return (
     <FormProvider {...methods}>
-      <Box p={4}>
+      <Flex
+        borderRadius="20px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="flex-start"
+        p={14}
+        width="95%"
+        height="90%"
+        boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+      >
         <Stepper index={activeStep} orientation="horizontal">
           {steps.map((step, index) => (
             <Step key={index}>
@@ -372,7 +416,7 @@ export default function AgregarSolicitud() {
             </Flex>
           </form>
         </Box>
-      </Box>
+      </Flex>
     </FormProvider>
   );
 }

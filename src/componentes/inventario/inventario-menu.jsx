@@ -18,12 +18,14 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, SearchIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const InventoryTable = () => {
     const [inventory, setInventory] = useState([]);
     const [filter, setFilter] = useState('');
     const token = localStorage.getItem('token_acceso');
     const toast = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const obtenerDatos = async () => {
@@ -61,12 +63,14 @@ const InventoryTable = () => {
         obtenerDatos();
     }, [token, toast]);
 
-
     return (
         <Box p={4} height="100%" border="1px" borderColor="#252526" borderRadius="10">
             <Stack direction="row" justifyContent="space-between" mt={5} spacing={4}>
                 <Button rightIcon={<SearchIcon />} color="white" background="#380F42">
                     Filtrar
+                </Button>
+                <Button color="white" background="#380F42" onClick={() => navigate('/inventario/registrar-apoyo')}>
+                    Registrar Apoyo
                 </Button>
                 <Button leftIcon={<AddIcon />} color="white" background="#380F42">
                     Añadir apoyo
@@ -93,7 +97,6 @@ const InventoryTable = () => {
                                 <Td isNumeric>{item.cantidad}</Td>
                                 <Td>{item.tipo}</Td>
                                 <Td>{item.descripcion}</Td>
-                                
                             </Tr>
                         ))}
                     </Tbody>
