@@ -32,7 +32,7 @@ function Login({ onLoginSuccess }) {
             const response = await axios.post(apiUrl, credentials);
 
             if (response.status === 200) {
-                const token = response.data.data;
+                const token = response.data.token_acceso;
                 console.log('Inicio de sesión exitoso', response.data);
                 localStorage.setItem('token_acceso', token);
                 onLoginSuccess();
