@@ -8,6 +8,7 @@ const RegistrarApoyo = () => {
         tipoApoyo: '',
         cantidad: '',
         ubicacion: '',
+        otroTipoApoyo: '',
     });
     const toast = useToast();
 
@@ -52,9 +53,15 @@ const RegistrarApoyo = () => {
                         <option value="Laminas">Láminas de plástico</option>
                         <option value="Computadoras">Computadoras</option>
                         <option value="Alimentos">Alimentos</option>
-                        {/* Agrega más opciones según sea necesario */}
+                        <option value="Otro">Otro</option>
                     </Select>
                 </FormControl>
+                {formData.tipoApoyo === 'Otro' && (
+                    <FormControl id="otroTipoApoyo" mb={4}>
+                        <FormLabel>Especificar Tipo de Apoyo</FormLabel>
+                        <Input type="text" name="otroTipoApoyo" value={formData.otroTipoApoyo} onChange={handleChange} required />
+                    </FormControl>
+                )}
                 <FormControl id="cantidad" mb={4}>
                     <FormLabel>Cantidad</FormLabel>
                     <Input type="number" name="cantidad" value={formData.cantidad} onChange={handleChange} required />
