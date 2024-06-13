@@ -1,6 +1,6 @@
 import react from "react";
-import Menu from '../../componentes/inventario/inventario-menu'
+import InventoryTable from '../../componentes/inventario/inventario-menu'
 
 export default function InventarioPagina() {
-  return <Menu />;
+  return <InventoryTable />;
 }
