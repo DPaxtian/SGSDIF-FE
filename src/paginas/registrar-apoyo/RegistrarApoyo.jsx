@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Select, useToast, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -7,11 +7,17 @@ const RegistrarApoyo = () => {
         fecha: '',
         solicitud: '',
         cantidad: '',
+        tipoApoyo: '',
     });
     const [solicitudes, setSolicitudes] = useState([]);
     const [apoyos, setApoyos] = useState([]);
+    const [tiposApoyo, setTiposApoyo] = useState([]);
+    const [entregas, setEntregas] = useState([]);
+    const [allApoyos, setAllApoyos] = useState([]);
+    const [allSolicitudes, setAllSolicitudes] = useState([]);
     const toast = useToast();
     const token = localStorage.getItem('token_acceso');
+    const fechaInputRef = useRef(null);
 
     useEffect(() => {
         const fetchSolicitudes = async () => {
@@ -34,16 +40,16 @@ const RegistrarApoyo = () => {
                     }
                 });
 
-                console.log('Respuesta de la API:', response.data);
-
                 if (Array.isArray(response.data.data)) {
                     const formattedSolicitudes = response.data.data.map(solicitud => ({
                         id: solicitud._id,
                         displayName: `${solicitud.nombre} ${solicitud.apellido_paterno} ${solicitud.apellido_materno} ${solicitud.curp}`,
+                        nombreCompleto: `${solicitud.nombre} ${solicitud.apellido_paterno} ${solicitud.apellido_materno}`,
                         direccion: `${solicitud.direccion.calle}, ${solicitud.direccion.colonia}, ${solicitud.direccion.estado}, ${solicitud.direccion.municipio}`
                     }));
 
                     setSolicitudes(formattedSolicitudes);
+                    setAllSolicitudes(response.data.data);
                 } else {
                     console.error('La respuesta de la API no contiene un array en la propiedad "data":', response.data);
                     toast({
@@ -86,10 +92,21 @@ const RegistrarApoyo = () => {
                     }
                 });
 
-                console.log('Respuesta de la API:', response.data);
-
                 if (Array.isArray(response.data.data)) {
-                    setApoyos(response.data.data);
+                    const formattedApoyos = response.data.data
+                        .filter(apoyo => apoyo.cantidad > 0)
+                        .map(apoyo => ({
+                            id: apoyo._id,
+                            displayName: `${apoyo.nombre} (${apoyo.cantidad})`,
+                            identificador: apoyo.identificador,
+                            nombre: apoyo.nombre,
+                            tipo: apoyo.tipo,
+                            cantidad: apoyo.cantidad,
+                            descripcion: apoyo.descripcion
+                        }));
+
+                    setTiposApoyo(formattedApoyos);
+                    setAllApoyos(response.data.data);
                 } else {
                     console.error('La respuesta de la API no contiene un array en la propiedad "data":', response.data);
                     toast({
@@ -112,8 +129,53 @@ const RegistrarApoyo = () => {
             }
         };
 
+        const fetchEntregas = async () => {
+            if (!token) {
+                console.error('Token no encontrado');
+                toast({
+                    title: 'Error',
+                    description: 'No se encontró el token de autenticación. Por favor, inicia sesión.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                return;
+            }
+
+            try {
+                const response = await axios.get('https://sgsdif-be.onrender.com/api/v1/entregas_apoyos/listar_entregas', {
+                    headers: {
+                        'token_acceso': token
+                    }
+                });
+
+                if (Array.isArray(response.data.data)) {
+                    setEntregas(response.data.data);
+                } else {
+                    console.error('La respuesta de la API no contiene un array en la propiedad "data":', response.data);
+                    toast({
+                        title: 'Error',
+                        description: 'La respuesta de la API no es válida.',
+                        status: 'error',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+            } catch (error) {
+                console.error('Error al obtener las entregas:', error);
+                toast({
+                    title: 'Error',
+                    description: 'Hubo un error al obtener las entregas.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
+        };
+
         fetchSolicitudes();
         fetchApoyos();
+        fetchEntregas();
     }, [toast, token]);
 
     const handleChange = (e) => {
@@ -126,6 +188,7 @@ const RegistrarApoyo = () => {
             fecha: '',
             solicitud: '',
             cantidad: '',
+            tipoApoyo: '',
         });
     };
 
@@ -144,11 +207,12 @@ const RegistrarApoyo = () => {
         }
 
         const selectedSolicitud = solicitudes.find(solicitud => solicitud.id === formData.solicitud);
+        const selectedApoyo = tiposApoyo.find(apoyo => apoyo.id === formData.tipoApoyo);
 
-        if (!selectedSolicitud) {
+        if (!selectedSolicitud || !selectedApoyo) {
             toast({
                 title: 'Error',
-                description: 'Solicitud no válida seleccionada.',
+                description: 'Solicitud o tipo de apoyo no válidos seleccionados.',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -156,12 +220,23 @@ const RegistrarApoyo = () => {
             return;
         }
 
+        if (parseInt(formData.cantidad) > selectedApoyo.cantidad) {
+            toast({
+                title: 'Cantidad no válida',
+                description: `La cantidad ingresada es mayor a la disponible (${selectedApoyo.cantidad}).`,
+                status: 'warning',
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
         const now = new Date();
-        const isoString = now.toISOString();
+        const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
 
         const entregaData = {
-            fecha_de_entrega: `${formData.fecha}T${now.toTimeString().split(' ')[0]}.000Z`,
-            identificador_de_apoyo: ' ',
+            fecha_de_entrega: `${formData.fecha}T${localDateTime.split('T')[1]}`,
+            identificador_de_apoyo: selectedApoyo.identificador, // Utilizar el identificador correcto
             cantidad: formData.cantidad,
             direccion: selectedSolicitud.direccion,
             identificador_de_solicitud: formData.solicitud
@@ -178,7 +253,16 @@ const RegistrarApoyo = () => {
 
             console.log('Respuesta de la API (entrega):', response.data);
 
-            setApoyos([...apoyos, response.data]); //Apartado pendiente para cuando Marlon me de endpoint de retorno de datos. :)
+            const nuevaEntrega = {
+                ...response.data,
+                nombreApoyo: selectedApoyo.nombre,
+                fecha_de_entrega: entregaData.fecha_de_entrega,
+                cantidad: entregaData.cantidad,
+                direccion: entregaData.direccion,
+                identificador_de_apoyo: entregaData.identificador_de_apoyo,
+            };
+
+            setEntregas(prevEntregas => [...prevEntregas, nuevaEntrega]); // Agrega la nueva entrega registrada a la tabla
 
             toast({
                 title: 'Registro exitoso',
@@ -188,10 +272,10 @@ const RegistrarApoyo = () => {
                 isClosable: true,
             });
 
-            resetForm();
+            resetForm(); // Restablecer el formulario después del registro exitoso
         } catch (error) {
             console.error('Error al registrar el apoyo:', error);
-            console.error('Detalles del error:', error.response.data);
+            console.error('Detalles del error:', error.response.data); // Imprimir detalles del error
             toast({
                 title: 'Error',
                 description: 'Hubo un error al registrar el apoyo',
@@ -202,12 +286,35 @@ const RegistrarApoyo = () => {
         }
     };
 
+    const getNombreApoyo = (identificador) => {
+        const apoyo = allApoyos.find(apoyo => apoyo.identificador === identificador);
+        return apoyo ? apoyo.nombre : 'N/A';
+    };
+
+    const getNombreSolicitante = (identificador) => {
+        const solicitud = allSolicitudes.find(solicitud => solicitud._id === identificador);
+        return solicitud ? `${solicitud.nombre} ${solicitud.apellido_paterno} ${solicitud.apellido_materno}` : 'N/A';
+    };
+
     return (
         <Box p={4} height="100%" border="1px" borderColor="#252526" borderRadius="10">
             <form onSubmit={handleSubmit}>
                 <FormControl id="fecha" mb={4}>
                     <FormLabel>Fecha</FormLabel>
-                    <Input type="date" name="fecha" value={formData.fecha} onChange={handleChange} required />
+                    <Input 
+                        type="date" 
+                        name="fecha" 
+                        value={formData.fecha} 
+                        onChange={handleChange} 
+                        required 
+                        readOnly
+                        onFocus={(e) => {
+                            e.target.removeAttribute('readonly');
+                            e.target.focus();
+                            e.target.setAttribute('readonly', 'readonly');
+                        }}
+                        ref={fechaInputRef}
+                    />
                 </FormControl>
                 <FormControl id="solicitud" mb={4}>
                     <FormLabel>Solicitud</FormLabel>
@@ -216,6 +323,17 @@ const RegistrarApoyo = () => {
                         {solicitudes.map((solicitud) => (
                             <option key={solicitud.id} value={solicitud.id}>
                                 {solicitud.displayName}
+                            </option>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl id="tipoApoyo" mb={4}>
+                    <FormLabel>Tipo de Apoyo</FormLabel>
+                    <Select name="tipoApoyo" value={formData.tipoApoyo} onChange={handleChange} required>
+                        <option value="">Selecciona un tipo de apoyo</option>
+                        {tiposApoyo.map((apoyo) => (
+                            <option key={apoyo.id} value={apoyo.id}>
+                                {apoyo.displayName}
                             </option>
                         ))}
                     </Select>
@@ -233,19 +351,21 @@ const RegistrarApoyo = () => {
                 <Table variant="simple">
                     <Thead>
                         <Tr>
-                            <Th>Nombre</Th>
-                            <Th>Tipo</Th>
+                            <Th>Fecha de Entrega</Th>
+                            <Th>Nombre de Solicitante</Th>
+                            <Th>Nombre de Apoyo</Th>
                             <Th>Cantidad</Th>
-                            <Th>Descripción</Th>
+                            <Th>Dirección</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {apoyos.map((apoyo, index) => (
+                        {entregas.map((entrega, index) => (
                             <Tr key={index}>
-                                <Td>{apoyo.nombre}</Td>
-                                <Td>{apoyo.tipo}</Td>
-                                <Td>{apoyo.cantidad}</Td>
-                                <Td>{apoyo.descripcion}</Td>
+                                <Td>{new Date(entrega.fecha_de_entrega).toLocaleString()}</Td>
+                                <Td>{getNombreSolicitante(entrega.identificador_de_solicitud)}</Td>
+                                <Td>{getNombreApoyo(entrega.identificador_de_apoyo)}</Td>
+                                <Td>{entrega.cantidad}</Td>
+                                <Td>{entrega.direccion}</Td>
                             </Tr>
                         ))}
                     </Tbody>
