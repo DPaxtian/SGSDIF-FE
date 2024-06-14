@@ -282,7 +282,7 @@ const RegistrarApoyo = () => {
 
         const entregaData = {
             fecha_de_entrega: `${formData.fecha}T${localDateTime.split('T')[1]}`,
-            identificador_de_apoyo: selectedApoyo.identificador,
+            identificador_de_apoyo: selectedApoyo.identificador, // Utilizar el identificador correcto
             cantidad: formData.cantidad,
             direccion: selectedSolicitud.direccion,
             identificador_de_solicitud: formData.solicitud
@@ -308,7 +308,7 @@ const RegistrarApoyo = () => {
                 identificador_de_apoyo: entregaData.identificador_de_apoyo,
             };
 
-            setEntregas(prevEntregas => [...prevEntregas, nuevaEntrega]);
+            setEntregas(prevEntregas => [...prevEntregas, nuevaEntrega]); // Agrega la nueva entrega registrada a la tabla
 
             toast({
                 title: 'Registro exitoso',
@@ -318,10 +318,10 @@ const RegistrarApoyo = () => {
                 isClosable: true,
             });
 
-            resetForm();
+            resetForm(); // Restablecer el formulario después del registro exitoso
         } catch (error) {
             console.error('Error al registrar el apoyo:', error);
-            console.error('Detalles del error:', error.response.data);
+            console.error('Detalles del error:', error.response.data); // Imprimir detalles del error
             toast({
                 title: 'Error',
                 description: 'Hubo un error al registrar el apoyo',
