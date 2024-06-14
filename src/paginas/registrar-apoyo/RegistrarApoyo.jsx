@@ -15,6 +15,7 @@ const RegistrarApoyo = () => {
     const [entregas, setEntregas] = useState([]);
     const [allApoyos, setAllApoyos] = useState([]);
     const [allSolicitudes, setAllSolicitudes] = useState([]);
+    const [colonias, setColonias] = useState([]);
     const toast = useToast();
     const token = localStorage.getItem('token_acceso');
     const fechaInputRef = useRef(null);
@@ -173,9 +174,54 @@ const RegistrarApoyo = () => {
             }
         };
 
+        const fetchColonias = async () => {
+            if (!token) {
+                console.error('Token no encontrado');
+                toast({
+                    title: 'Error',
+                    description: 'No se encontró el token de autenticación. Por favor, inicia sesión.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                return;
+            }
+
+            try {
+                const response = await axios.get('https://sgsdif-be.onrender.com/api/v1/colonias/obtener_colonias', {
+                    headers: {
+                        'token_acceso': token
+                    }
+                });
+
+                if (Array.isArray(response.data.data)) {
+                    setColonias(response.data.data);
+                } else {
+                    console.error('La respuesta de la API no contiene un array en la propiedad "data":', response.data);
+                    toast({
+                        title: 'Error',
+                        description: 'La respuesta de la API no es válida.',
+                        status: 'error',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+            } catch (error) {
+                console.error('Error al obtener las colonias:', error);
+                toast({
+                    title: 'Error',
+                    description: 'Hubo un error al obtener las colonias.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
+        };
+
         fetchSolicitudes();
         fetchApoyos();
         fetchEntregas();
+        fetchColonias();
     }, [toast, token]);
 
     const handleChange = (e) => {
@@ -236,7 +282,7 @@ const RegistrarApoyo = () => {
 
         const entregaData = {
             fecha_de_entrega: `${formData.fecha}T${localDateTime.split('T')[1]}`,
-            identificador_de_apoyo: selectedApoyo.identificador, // Utilizar el identificador correcto
+            identificador_de_apoyo: selectedApoyo.identificador,
             cantidad: formData.cantidad,
             direccion: selectedSolicitud.direccion,
             identificador_de_solicitud: formData.solicitud
@@ -262,7 +308,7 @@ const RegistrarApoyo = () => {
                 identificador_de_apoyo: entregaData.identificador_de_apoyo,
             };
 
-            setEntregas(prevEntregas => [...prevEntregas, nuevaEntrega]); // Agrega la nueva entrega registrada a la tabla
+            setEntregas(prevEntregas => [...prevEntregas, nuevaEntrega]);
 
             toast({
                 title: 'Registro exitoso',
@@ -272,10 +318,10 @@ const RegistrarApoyo = () => {
                 isClosable: true,
             });
 
-            resetForm(); // Restablecer el formulario después del registro exitoso
+            resetForm();
         } catch (error) {
             console.error('Error al registrar el apoyo:', error);
-            console.error('Detalles del error:', error.response.data); // Imprimir detalles del error
+            console.error('Detalles del error:', error.response.data);
             toast({
                 title: 'Error',
                 description: 'Hubo un error al registrar el apoyo',
@@ -294,6 +340,20 @@ const RegistrarApoyo = () => {
     const getNombreSolicitante = (identificador) => {
         const solicitud = allSolicitudes.find(solicitud => solicitud._id === identificador);
         return solicitud ? `${solicitud.nombre} ${solicitud.apellido_paterno} ${solicitud.apellido_materno}` : 'N/A';
+    };
+
+    const getNombreColonia = (coloniaId) => {
+        const colonia = colonias.find(colonia => colonia._id === coloniaId);
+        return colonia ? colonia.nombre_colonia : coloniaId;
+    };
+
+    const formatDireccion = (direccion) => {
+        const parts = direccion.split(',');
+        if (parts.length === 4) {
+            parts[1] = getNombreColonia(parts[1].trim());
+            return parts.join(',');
+        }
+        return direccion;
     };
 
     return (
@@ -365,7 +425,7 @@ const RegistrarApoyo = () => {
                                 <Td>{getNombreSolicitante(entrega.identificador_de_solicitud)}</Td>
                                 <Td>{getNombreApoyo(entrega.identificador_de_apoyo)}</Td>
                                 <Td>{entrega.cantidad}</Td>
-                                <Td>{entrega.direccion}</Td>
+                                <Td>{formatDireccion(entrega.direccion)}</Td>
                             </Tr>
                         ))}
                     </Tbody>
