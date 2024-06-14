@@ -111,9 +111,6 @@ const InventoryTable = () => {
                 >
                     Filtrar
                 </Button>
-                <Button color="white" background="#380F42" onClick={() => navigate('/inventario/registrar-apoyo')}>
-                    Registrar Apoyo
-                </Button>
                 <Button leftIcon={<AddIcon />} color="white" background="#380F42" onClick={() => navigate('/inventario/agregar-apoyo')}>
                     Añadir apoyo
                 </Button>
