@@ -11,7 +11,10 @@ import {
     Text,
     HStack,
     useToast,
-    Flex
+    Flex,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -97,6 +100,17 @@ const AgregarApoyo = () => {
 
     return (
         <Flex direction="column" p={5} borderWidth={1} borderRadius="lg" boxShadow="lg" width="100%" height="100%" mx="auto">
+            <Breadcrumb mb={4}>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                    <BreadcrumbLink href="/inventario">Inventario</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink href="#">Añadir Apoyo</BreadcrumbLink>
+                </BreadcrumbItem>
+            </Breadcrumb>
             <Heading as="h3" size="lg" mb={5}>Completa los campos para agregar nuevas existencias al inventario:</Heading>
             <Text mb={5}>Los campos que contienen un * son obligatorios</Text>
             <Stack spacing={4} as="form" onSubmit={handleSubmit}>
