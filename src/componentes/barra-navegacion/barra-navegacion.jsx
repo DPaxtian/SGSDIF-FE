@@ -18,7 +18,7 @@ const rutas = [
   { nombre: "Inicio", icono: FiHome, ruta: "/" },
   { nombre: "Solicitudes", icono: FiClipboard, ruta: "/solicitudes" },
   { nombre: "Inventario", icono: FiTruck, ruta: "/inventario" },
-  { nombre: "Registrar Apoyo", icono: FiPlusCircle, ruta: "/registrar-apoyo" },
+  { nombre: "Entregas de Apoyo", icono: FiPlusCircle, ruta: "/registrar-apoyo" },
   { nombre: "Reportes", icono: FiBarChart, ruta: "/reportes" },
   { nombre: "Configuraciones", icono: FiSettings, ruta: "/configuraciones" },
 ];
