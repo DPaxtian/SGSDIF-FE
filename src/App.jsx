@@ -6,7 +6,7 @@ import AgregarSolicitudPagina from "./paginas/solicitudes/agregar-solicitud-pagi
 import InventarioMenu from './paginas/inventario/inventario-pagina'
 import AgregarApoyoInventario from "./paginas/inventario/agregar-apoyo-pagina";
 import ReportePagina from "./paginas/reportes/generar-reporte-pagina";
-import RegistrarApoyo from "./paginas/inventario/RegistrarApoyo";
+import RegistrarApoyo from "./paginas/registrar-apoyo/RegistrarApoyo";
 
 const App = () => {
   return (
@@ -34,7 +34,7 @@ const configuracionRutas = [
   { ruta: "/inventario", elemento: <InventarioMenu /> },
   { ruta: "/inventario/agregar-apoyo", elemento: <AgregarApoyoInventario /> },
   { ruta: "/reportes", elemento: <ReportePagina/> },
-  { ruta: "/inventario/registrar-apoyo", elemento: <RegistrarApoyo /> },
+  { ruta: "/registrar-apoyo", elemento: <RegistrarApoyo /> },
   { ruta: "/reportes", elemento: <h1>Reportes</h1> },
   { ruta: "/configuraciones", elemento: <h1>Configuraciones</h1> },
 ];
